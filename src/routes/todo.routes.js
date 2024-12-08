@@ -9,12 +9,13 @@ const {
 } = require('../controllers/todo.controller')
 
 const router = express.Router()
+const { protected } = require('../middleware/auth.middleware')
 
-router.get('', getTodosController)
-router.get('/:id', getTodoByIdController)
-router.post('', createTodoController)
-router.patch('/:id', updateTodoController)
-router.delete('/:id', deleteTodoController)
+router.get('', protected, getTodosController)
+router.get('/:id', protected, getTodoByIdController)
+router.post('', protected, createTodoController)
+router.patch('/:id', protected, updateTodoController)
+router.delete('/:id', protected, deleteTodoController)
 
 module.exports = {
   todosRouter: router,
