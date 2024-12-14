@@ -1,11 +1,12 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config();
 
-const express = require('express')
-const cors = require('cors')
-const { todosRouter } = require('./routes/todo.routes.js')
-const { authRouter } = require('./routes/auth.routes.js')
-const { usersRouter } = require('./routes/user.routes.js')
-const { connectMongoDb } = require('./config/db.js')
+import express from 'express'
+import cors from 'cors'
+import { todosRouter } from './routes/todo.routes.js'
+import { authRouter } from './routes/auth.routes.js'
+import { usersRouter } from './routes/user.routes.js'
+import { connectMongoDb } from './config/db.js'
 
 const app = express()
 

@@ -1,8 +1,9 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 
-const jwt = require('jsonwebtoken')
+dotenv.config()
 
-const protected = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1]
 
   if (!token) return res.status(401).json({ message: 'No autorizado, falta token' })
@@ -14,8 +15,4 @@ const protected = (req, res, next) => {
   } catch (error) {
     res.status(401).json({ message: 'Token inválido' })
   }
-}
-
-module.exports = {
-  protected,
 }

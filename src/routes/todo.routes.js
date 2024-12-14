@@ -1,22 +1,21 @@
-const express = require('express')
+import express from 'express'
 
-const {
+import {
   getTodosController,
   getTodoByIdController,
   createTodoController,
   updateTodoController,
   deleteTodoController,
-} = require('../controllers/todo.controller')
+} from '../controllers/todo.controller.js'
 
+import { authMiddleware } from '../middleware/auth.middleware.js'
 const router = express.Router()
-const { protected } = require('../middleware/auth.middleware')
 
-router.get('', protected, getTodosController)
-router.get('/:id', protected, getTodoByIdController)
-router.post('', protected, createTodoController)
-router.patch('/:id', protected, updateTodoController)
-router.delete('/:id', protected, deleteTodoController)
+router.get('/all', authMiddleware, getAllTodosController)
+router.get('', authMiddleware, getTodosController)
+router.get('/:id', authMiddleware, getTodoByIdController)
+router.post('', authMiddleware, createTodoController)
+router.patch('/:id', authMiddleware, updateTodoController)
+router.delete('/:id', authMiddleware, deleteTodoController)
 
-module.exports = {
-  todosRouter: router,
-}
+export const todosRouter = router

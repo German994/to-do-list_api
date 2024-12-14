@@ -1,13 +1,15 @@
-const express = require('express')
-const { registerController, loginController } = require('../controllers/auth.controller')
-const { protected } = require('../middleware/auth.middleware')
+import express from 'express'
+
+import {
+  registerController,
+  loginController,
+} from '../controllers/auth.controller.js'
+import { verificationToken } from '../middleware/auth.middleware.js'
 
 const router = express.Router()
 
 router.post('/register', registerController)
 router.post('/login', loginController)
-router.get('/protected', protected)
+router.get('/protected', verificationToken)
 
-module.exports = {
-  authRouter: router,
-}
+export const authRouter = router

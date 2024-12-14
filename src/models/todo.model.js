@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const todoSchema = new mongoose.Schema(
   {
@@ -9,9 +9,11 @@ const todoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // Referencia al modelo de usuario
       required: true,
-    },  
+    },
   },
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Todo', todoSchema)
+const Todo = mongoose.model('Todo', todoSchema)
+
+export default Todo

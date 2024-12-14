@@ -1,13 +1,14 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken')
+import User from '../models/user.model.js'
+dotenv.config();
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' })
 }
 
-const registerController = async (req, res) => {
+export const registerController = async (req, res) => {
   const { username, email, password } = req.body
 
   try {
@@ -23,7 +24,7 @@ const registerController = async (req, res) => {
   }
 }
 
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -40,9 +41,4 @@ const loginController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error al iniciar sesión', error })
   }
-}
-
-module.exports = {
-  registerController,
-  loginController,
 }

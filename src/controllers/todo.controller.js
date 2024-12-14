@@ -1,11 +1,23 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
 
-const Todo = require('../models/todo.model')
+dotenv.config()
+
+import Todo from '../models/todo.model.js'
+
+// Obtener todos de all users
+export const getAllTodosController = async (req, res) => {
+  try {
+    const todos = await Todo.find() // Todas las tareas
+    res.status(200).json(todos)
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 // Obtener todos
-const getTodosController = async (req, res) => {
+export const getTodosController = async (req, res) => {
   try {
-    const todos = await Todo.find({ user: req.user.id }); // Solo tareas del usuario autenticado
+    const todos = await Todo.find({ user: req.user.id }) // Solo tareas del usuario autenticado
     res.status(200).json(todos)
   } catch (error) {
     res.status(500).json({ message: error })
@@ -13,9 +25,9 @@ const getTodosController = async (req, res) => {
 }
 
 // Obtener un todo
-const getTodoByIdController = async (req, res) => {
+export const getTodoByIdController = async (req, res) => {
   try {
-    const todo = await Todo.findOne({ _id: req.params.id, user: req.user.id }); // Valida que pertenezca al usuario
+    const todo = await Todo.findOne({ _id: req.params.id, user: req.user.id }) // Valida que pertenezca al usuario
     if (!todo) return res.status(404).json({ message: 'Todo no encontrado' })
 
     res.status(200).json(todo)
@@ -24,14 +36,13 @@ const getTodoByIdController = async (req, res) => {
   }
 }
 
-
 // Crear todo
-const createTodoController = async (req, res) => {
+export const createTodoController = async (req, res) => {
   try {
     const newTodo = await Todo.create({
       ...req.body,
       user: req.user.id, // Asocia la tarea al usuario autenticado
-    });
+    })
 
     res.status(201).json({status: 'OK', message: 'Todo creado correctamente', data: newTodo})
   } catch (error) {
@@ -40,7 +51,7 @@ const createTodoController = async (req, res) => {
 }
 
 // Actualizar todo
-const updateTodoController = async (req, res) => {
+export const updateTodoController = async (req, res) => {
   try {
     const updatedTodo = await Todo.findByIdAndUpdate(
       { _id: req.params.id, user: req.user.id }, // Asegura que pertenece al usuario
@@ -57,7 +68,7 @@ const updateTodoController = async (req, res) => {
 }
 
 // Eliminar todo
-const deleteTodoController = async (req, res) => {
+export const deleteTodoController = async (req, res) => {
   try {
     const deleteTodo = await Todo.findOneAndDelete({ _id: req.params.id, user: req.user.id }); // Valida propiedad
     if (!deleteTodo)
@@ -67,12 +78,4 @@ const deleteTodoController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error })
   }
-}
-
-module.exports = {
-  getTodosController,
-  getTodoByIdController,
-  createTodoController,
-  updateTodoController,
-  deleteTodoController,
 }

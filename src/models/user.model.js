@@ -1,7 +1,8 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
 
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+dotenv.config()
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,4 +27,6 @@ userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password)
 }
 
-module.exports = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
+
+export default User
