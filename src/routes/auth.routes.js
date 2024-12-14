@@ -4,12 +4,12 @@ import {
   registerController,
   loginController,
 } from '../controllers/auth.controller.js'
-import { verificationToken } from '../middleware/auth.middleware.js'
+import { authMiddleware } from '../middleware/auth.middleware.js'
 
 const router = express.Router()
 
 router.post('/register', registerController)
 router.post('/login', loginController)
-router.get('/protected', verificationToken)
+router.get('/protected', authMiddleware)
 
 export const authRouter = router
