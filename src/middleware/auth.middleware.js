@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
-export const authMiddleware = (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1]
 
   if (!token) return res.status(401).json({ message: 'No autorizado, falta token' })
@@ -13,6 +13,6 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded
     next()
   } catch (error) {
-    res.status(401).json({ message: 'Token inválido' })
+    res.status(403).json({ message: 'Token inválido' })
   }
 }

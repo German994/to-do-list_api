@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-dotenv.config();
+dotenv.config()
 
 import express from 'express'
 import cors from 'cors'
@@ -14,9 +14,7 @@ app.use(express.json(), cors())
 
 connectMongoDb()
 
-// Rutas
 app.use('/api/auth', authRouter)
-
 app.use('/api/todos', todosRouter)
 app.use('/api/users', usersRouter)
 

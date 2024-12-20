@@ -8,15 +8,15 @@ import {
   updateTodoController,
   deleteTodoController,
 } from '../controllers/todo.controller.js'
+import { authenticateToken } from '../middleware/auth.middleware.js'
 
-import { authMiddleware } from '../middleware/auth.middleware.js'
 const router = express.Router()
 
-router.get('/all', authMiddleware, getAllTodosController)
-router.get('', authMiddleware, getTodosController)
-router.get('/:id', authMiddleware, getTodoByIdController)
-router.post('', authMiddleware, createTodoController)
-router.patch('/:id', authMiddleware, updateTodoController)
-router.delete('/:id', authMiddleware, deleteTodoController)
+router.get('/all', authenticateToken, getAllTodosController)
+router.get('', authenticateToken, getTodosController)
+router.get('/:id', authenticateToken, getTodoByIdController)
+router.post('', authenticateToken, createTodoController)
+router.patch('/:id', authenticateToken, updateTodoController)
+router.delete('/:id', authenticateToken, deleteTodoController)
 
 export const todosRouter = router
