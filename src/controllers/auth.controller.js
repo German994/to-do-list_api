@@ -29,8 +29,7 @@ export const registerController = async (req, res) => {
     const user = await User.create({ username, email, password })
 
     res.status(201).json({
-      user: { id: user._id, username, email },
-      accessToken,
+      user: { id: user._id, username, email }
     })
   } catch (error) {
     res.status(500).json({ message: 'Error al registrar el usuario', error })
