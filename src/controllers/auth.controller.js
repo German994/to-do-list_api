@@ -28,8 +28,6 @@ export const registerController = async (req, res) => {
 
     const user = await User.create({ username, email, password })
 
-    const accessToken = generateAccessToken(user)
-
     res.status(201).json({
       user: { id: user._id, username, email },
       accessToken,
@@ -65,6 +63,39 @@ export const loginController = async (req, res) => {
   }
 }
 
+export const authenticateTokenController = (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' })
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Token no válido' })
+    }
+
+    req.user = user
+    next()
+  })
+}
+
+export const meController = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password') // Excluye el campo "password"
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+    res.json(user)
+  } catch (error) {
+    console.error('Error en /me:', error)
+    res.status(500).json({ message: 'Error del servidor' })
+  }
+}
+
 // https://www.youtube.com/watch?v=mbsmsi7l3r4&t=842s
 
 export const refreshTokenController = async (req, res) => {
@@ -85,6 +116,7 @@ export const refreshTokenController = async (req, res) => {
 }
 
 // TODO fix logoutController
+
 export const logoutController = async (req, res) => {
   const { refreshToken } = req.body
 
